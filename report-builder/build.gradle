@@ -1,0 +1,38 @@
+sourceSets {
+    main.java.srcDirs = [file("src")]
+    main.resources.srcDirs = [file("resources")]
+    test.java.srcDirs = []
+    test.resources.srcDirs = []
+}
+
+dependencies {
+    implementation "org.freemarker:freemarker:2.3.30"
+    implementation "org.jetbrains:annotations:16.0.2"
+    implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.575"
+    implementation library_utils
+}
+
+task reportBuilderJar(type: Jar) {
+    archiveBaseName.set(report_builder_jar_name)
+    destinationDirectory = dist
+    from(sourceSets.main.output) {
+        exclude "**/idea/**"
+    }
+}
+
+task reportBuilderIdeaJar(type: Jar) {
+    archiveBaseName.set(report_builder_idea_jar_name)
+    destinationDirectory = dist
+    from(sourceSets.main.output)
+}
+
+task reportBuilderJavadocJar(type: Jar) {
+    archiveBaseName.set(report_builder_javadoc_jar_name)
+    destinationDirectory = dist
+    from javadoc
+}
+
+javadoc {
+    exclude "**/impl/**"
+    source = sourceSets.main.java
+}

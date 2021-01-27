@@ -54,3 +54,7 @@ javadoc {
     exclude "**/impl/**"
     source = sourceSets.main.java
 }
+
+task allJars {
+    dependsOn(reportBuilderJar, reportBuilderIdeaJar, reportBuilderJavadocJar)
+}

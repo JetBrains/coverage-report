@@ -16,6 +16,7 @@
 
 package jetbrains.coverage.report.idea;
 
+import com.intellij.rt.coverage.data.BranchData;
 import com.intellij.rt.coverage.data.ClassData;
 import com.intellij.rt.coverage.data.LineCoverage;
 import com.intellij.rt.coverage.data.LineData;
@@ -91,7 +92,20 @@ public class IDEACoverageClassInfo extends JavaClassInfo {
   }
 
   public Entry getBlockStats() {
-    return null;
+    int total = 0;
+    int covered = 0;
+    if (myClassData == null) return null;
+    Object[] lines = myClassData.getLines();
+    if (lines == null) return null;
+    for (Object l: lines) {
+      if (l == null) continue;
+      LineData line = (LineData) l;
+      BranchData branches = line.getBranchData();
+      if (branches == null) continue;
+      total += branches.getTotalBranches();
+      covered += branches.getCoveredBranches();
+    }
+    return new Entry(total, covered);
   }
 
   public Entry getStatementStats() {

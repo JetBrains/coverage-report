@@ -39,7 +39,9 @@ task reportBuilderJar(type: Jar) {
 task reportBuilderIdeaJar(type: Jar) {
     archiveBaseName.set(report_builder_idea_jar_name)
     destinationDirectory = dist
-    from(sourceSets.main.output)
+    from(sourceSets.main.output) {
+        include "**/idea/**"
+    }
 }
 
 task reportBuilderJavadocJar(type: Jar) {

@@ -1,0 +1,59 @@
+/*
+ * Copyright 2000-2021 JetBrains s.r.o.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+def coverageGroupId = 'org.jetbrains.intellij.deps'
+project(":report-builder").afterEvaluate { builder ->
+    publishing {
+        publications {
+            ReportBuilderPublication(MavenPublication) {
+                groupId coverageGroupId
+                artifactId report_builder_jar_name
+                version version
+                artifact builder.tasks.getByName("reportBuilderJar")
+            }
+            ReportBuilderIdeaPublication(MavenPublication) {
+                groupId coverageGroupId
+                artifactId report_builder_idea_jar_name
+                version version
+                artifact builder.tasks.getByName("reportBuilderIdeaJar")
+            }
+            ReportBuilderJavadocPublication(MavenPublication) {
+                groupId coverageGroupId
+                artifactId report_builder_javadoc_jar_name
+                version version
+                artifact builder.tasks.getByName("reportBuilderJavadocJar")
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    pkg {
+        repo = 'intellij-third-party-dependencies'
+        name = 'report-builder'
+        userOrg = 'jetbrains'
+        version {
+            name = project.version
+        }
+    }
+    publications = ['ReportBuilderPublication', 'ReportBuilderIdeaPublication', 'ReportBuilderJavadocPublication']
+}

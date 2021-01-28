@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
+plugins {
+    id "com.jfrog.bintray" version "1.8.5" apply false
+}
+
+private calcVersion() {
+    hasProperty("teamcity") ? "1.0.${teamcity["build.number"]}" : "1.0.0"
+}
+
 allprojects {
+    version calcVersion()
+
     repositories {
         mavenCentral()
         maven { url "https://jetbrains.bintray.com/intellij-third-party-dependencies" }
@@ -42,3 +52,5 @@ sourceSets {
 clean.doFirst {
     delete dist
 }
+
+apply from: 'publish.gradle'

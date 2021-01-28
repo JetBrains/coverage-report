@@ -47,6 +47,9 @@ project(":report-builder").afterEvaluate { builder ->
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
+
+    publish = true
+
     pkg {
         repo = 'intellij-third-party-dependencies'
         name = 'report-builder'

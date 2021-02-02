@@ -18,6 +18,18 @@
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
+private addDependencies(publication, project) {
+    publication.pom.withXml {
+        def dependencies = asNode().appendNode('dependencies')
+        project.configurations.getByName("compileClasspath").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
+            def dependency = dependencies.appendNode('dependency')
+            dependency.appendNode('groupId', it.moduleGroup)
+            dependency.appendNode('artifactId', it.moduleName)
+            dependency.appendNode('version', it.moduleVersion)
+        }
+    }
+}
+
 def coverageGroupId = 'org.jetbrains.intellij.deps'
 project(":report-builder").afterEvaluate { builder ->
     publishing {
@@ -27,18 +39,21 @@ project(":report-builder").afterEvaluate { builder ->
                 artifactId report_builder_jar_name
                 version version
                 artifact builder.tasks.getByName("reportBuilderJar")
+                addDependencies(it, builder)
             }
             ReportBuilderIdeaPublication(MavenPublication) {
                 groupId coverageGroupId
                 artifactId report_builder_idea_jar_name
                 version version
                 artifact builder.tasks.getByName("reportBuilderIdeaJar")
+                addDependencies(it, builder)
             }
             ReportBuilderJavadocPublication(MavenPublication) {
                 groupId coverageGroupId
                 artifactId report_builder_javadoc_jar_name
                 version version
                 artifact builder.tasks.getByName("reportBuilderJavadocJar")
+                addDependencies(it, builder)
             }
         }
     }

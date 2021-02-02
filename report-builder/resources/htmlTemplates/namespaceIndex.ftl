@@ -29,20 +29,19 @@
 <br/>
 
 <table class="coverageStats">
+<#assign sortDesc=sortOption.descendingOrder>
+<#assign sortByName=sortOption.orderByName()>
+<#assign showBlocks=statsCalculator.getForNamespace(module.name, namespace).blockStats.percent &gt;= 0>
+<tr>
+  <th class="name  <@sortableCellClass sorted=sortByName sortedDesc=sortDesc/>">
+    <@sortableCellLabel label=resources['coverage.class']?cap_first sortOption=sortOption.nextOrderByName()/>
+  </th>
+    <@coverageStatHeaderRow coverageStatistics=statsCalculator.getForNamespace(module.name, namespace) sortOption=sortOption/>
+</tr>
 <#list classes as class>
-  <#if class == classes?first>
-  <#assign sortDesc=sortOption.descendingOrder>
-  <#assign sortByName=sortOption.orderByName()>
-  <tr>
-    <th class="name  <@sortableCellClass sorted=sortByName sortedDesc=sortDesc/>">
-      <@sortableCellLabel label=resources['coverage.class']?cap_first sortOption=sortOption.nextOrderByName()/>
-    </th>
-    <@coverageStatHeaderRow coverageStatistics=statsCalculator.getForClassWithInnerClasses(class) sortOption=sortOption/>
-  </tr>
-  </#if>
   <tr>
     <td class="name"><a href="${paths.getClassCoveragePath(module, namespace, class)}"><@className clazz=class/></a></td>
-    <@coverageStatRow coverageStatistics=statsCalculator.getForClassWithInnerClasses(class)/>
+    <@coverageStatRow coverageStatistics=statsCalculator.getForClassWithInnerClasses(class) showEmptyBlocks=showBlocks/>
   </tr>
 </#list>
 </table>

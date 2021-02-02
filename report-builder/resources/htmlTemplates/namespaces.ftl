@@ -26,20 +26,19 @@
 <h2>Coverage Breakdown</h2>
 
 <table class="coverageStats">
+<#assign sortDesc=sortOption.descendingOrder>
+<#assign sortByName=sortOption.orderByName()>
+<#assign showBlocks=statsCalculator.getForModule(module.name).blockStats.percent &gt;= 0>
+<tr>
+  <th class="name  <@sortableCellClass sorted=sortByName sortedDesc=sortDesc/>">
+    <@sortableCellLabel label=resources['coverage.namespace']?cap_first sortOption=sortOption.nextOrderByName()/>
+  </th>
+  <@coverageStatHeaderRow coverageStatistics=statsCalculator.getForModule(module.name) sortOption=sortOption/>
+</tr>
 <#list namespaces as ns>
-  <#if ns == namespaces?first>
-  <#assign sortDesc=sortOption.descendingOrder>
-  <#assign sortByName=sortOption.orderByName()>
-  <tr>
-    <th class="name  <@sortableCellClass sorted=sortByName sortedDesc=sortDesc/>">
-      <@sortableCellLabel label=resources['coverage.namespace']?cap_first sortOption=sortOption.nextOrderByName()/>
-    </th>
-    <@coverageStatHeaderRow coverageStatistics=statsCalculator.getForNamespace(module.name, ns) sortOption=sortOption/>
-  </tr>
-  </#if>
   <tr>
     <td class="name"><a href="${paths.getClassesIndexPath(module, ns, sortOption)}"><@namespaceName namespace=ns/></a></td>
-    <@coverageStatRow coverageStatistics=statsCalculator.getForNamespace(module.name, ns)/>
+    <@coverageStatRow coverageStatistics=statsCalculator.getForNamespace(module.name, ns) showEmptyBlocks=showBlocks/>
   </tr>
 </#list>
 </table>

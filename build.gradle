@@ -39,7 +39,6 @@ def utils = rootProject.file('lib/util.jar')
 ext.library_utils = files(utils)
 ext.dist = rootProject.file('dist/')
 ext.report_builder_jar_name = 'coverage-report'
-ext.report_builder_idea_jar_name = 'coverage-report-idea'
 ext.report_builder_javadoc_jar_name = 'coverage-report-help'
 
 sourceSets {

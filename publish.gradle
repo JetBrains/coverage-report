@@ -41,19 +41,11 @@ project(":report-builder").afterEvaluate { builder ->
                 artifact builder.tasks.getByName("reportBuilderJar")
                 addDependencies(it, builder)
             }
-            ReportBuilderIdeaPublication(MavenPublication) {
-                groupId coverageGroupId
-                artifactId report_builder_idea_jar_name
-                version version
-                artifact builder.tasks.getByName("reportBuilderIdeaJar")
-                addDependencies(it, builder)
-            }
             ReportBuilderJavadocPublication(MavenPublication) {
                 groupId coverageGroupId
                 artifactId report_builder_javadoc_jar_name
                 version version
                 artifact builder.tasks.getByName("reportBuilderJavadocJar")
-                addDependencies(it, builder)
             }
         }
     }
@@ -73,5 +65,5 @@ bintray {
             name = project.version
         }
     }
-    publications = ['ReportBuilderPublication', 'ReportBuilderIdeaPublication', 'ReportBuilderJavadocPublication']
+    publications = ['ReportBuilderPublication', 'ReportBuilderJavadocPublication']
 }

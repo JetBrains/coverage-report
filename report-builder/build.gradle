@@ -31,17 +31,7 @@ dependencies {
 task reportBuilderJar(type: Jar) {
     archiveBaseName.set(report_builder_jar_name)
     destinationDirectory = dist
-    from(sourceSets.main.output) {
-        exclude "**/idea/**"
-    }
-}
-
-task reportBuilderIdeaJar(type: Jar) {
-    archiveBaseName.set(report_builder_idea_jar_name)
-    destinationDirectory = dist
-    from(sourceSets.main.output) {
-        include "**/idea/**"
-    }
+    from(sourceSets.main.output)
 }
 
 task reportBuilderJavadocJar(type: Jar) {
@@ -56,5 +46,5 @@ javadoc {
 }
 
 task allJars {
-    dependsOn(reportBuilderJar, reportBuilderIdeaJar, reportBuilderJavadocJar)
+    dependsOn(reportBuilderJar, reportBuilderJavadocJar)
 }

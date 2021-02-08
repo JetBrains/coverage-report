@@ -336,6 +336,9 @@ public class HTMLReportBuilderTest extends BaseTestCase {
 
   private void checkReport(CoverageData covData) throws IOException {
     Assert.assertTrue(myReportDir.isDirectory());
+    Assert.assertTrue(new File(myReportDir, "css").isDirectory());
+    Assert.assertTrue(new File(myReportDir, "img").isDirectory());
+    Assert.assertTrue(new File(myReportDir, "js").isDirectory());
     checkIndex(covData);
   }
 

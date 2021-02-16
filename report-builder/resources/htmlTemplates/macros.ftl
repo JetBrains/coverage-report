@@ -2,7 +2,7 @@
 
 <#macro currentScope>Current scope: </#macro>
 
-<#macro coverageStatCell statEntry>
+<#macro coverageStatCell statEntry showEmpty=false>
 <#if statEntry.percent &gt;= 0>
 <td class="coverageStat">
   <span class="percent">
@@ -16,6 +16,10 @@
            >)
   </span>
 </td>
+<#else>
+  <#if showEmpty>
+    <td class="coverageStat"/>
+  </#if>
 </#if>
 </#macro>
 
@@ -42,12 +46,12 @@
 
 <#macro sortableCellLabel label sortOption><a href="${paths.getOrder(sortOption)}">${label}</a></#macro>
 
-<#macro coverageStatRow coverageStatistics showForClass=true>
+<#macro coverageStatRow coverageStatistics showForClass=true showEmptyBlocks=false>
 <#if showForClass>
 <@coverageStatCell statEntry=coverageStatistics.classStats/>
 </#if>
 <@coverageStatCell statEntry=coverageStatistics.methodStats/>
-<@coverageStatCell statEntry=coverageStatistics.blockStats/>
+<@coverageStatCell statEntry=coverageStatistics.blockStats showEmpty=showEmptyBlocks/>
 <@coverageStatCell statEntry=coverageStatistics.lineStats/>
 <@coverageStatCell statEntry=coverageStatistics.statementStats/>
 </#macro>

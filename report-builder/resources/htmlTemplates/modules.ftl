@@ -16,18 +16,17 @@
 <h2>Coverage Breakdown</h2>
 
 <table class="coverageStats">
+<#assign showBlocks=statsCalculator.overallStats.blockStats.percent &gt;= 0>
+<tr>
+  <th class="name  <@sortableCellClass sorted=sortOption.orderByName() sortedDesc=sortOption.descendingOrder/>">
+    <@sortableCellLabel label=resources['coverage.module']?cap_first sortOption=sortOption.nextOrderByName()/>
+  </th>
+  <@coverageStatHeaderRow coverageStatistics=statsCalculator.overallStats sortOption=sortOption/>
+</tr>
 <#list modules as ms>
-  <#if ms == modules?first>
-  <tr>
-    <th class="name  <@sortableCellClass sorted=sortOption.orderByName() sortedDesc=sortOption.descendingOrder/>">
-      <@sortableCellLabel label=resources['coverage.module']?cap_first sortOption=sortOption.nextOrderByName()/>
-    </th>
-    <@coverageStatHeaderRow coverageStatistics=statsCalculator.getForModule(ms.name) sortOption=sortOption/>
-  </tr>
-  </#if>
   <tr>
     <td class="name"><a href="${paths.getNamespacesIndexPath(ms, sortOption)}"><@moduleName module=ms/></a></td>
-    <@coverageStatRow coverageStatistics=statsCalculator.getForModule(ms.name)/>
+    <@coverageStatRow coverageStatistics=statsCalculator.getForModule(ms.name) showEmptyBlocks=showBlocks/>
   </tr>
 </#list>
 </table>

@@ -40,9 +40,9 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
   private File myReportZip;
   private String myResourceBundleName = "javaCoverage";
 
-  private static final String CSS_DIR = ".css";
-  private static final String IMG_DIR = ".img";
-  private static final String JS_DIR = ".js";
+  private static final String CSS_DIR = "css";
+  private static final String IMG_DIR = "img";
+  private static final String JS_DIR = "js";
   private String myFooterText;
   private String myFooterSourceText;
 

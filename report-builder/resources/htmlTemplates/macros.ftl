@@ -95,10 +95,10 @@
 <head>
   <title>Coverage Report > ${title}</title>
   <style type="text/css">
-    @import "${paths.resourcesPath}/.css/coverage.css";
-    @import "${paths.resourcesPath}/.css/highlight-idea.css";
+    @import "${paths.resourcesPath}/css/coverage.css";
+    @import "${paths.resourcesPath}/css/highlight-idea.css";
   </style>
-  <script type="text/javascript" src="${paths.resourcesPath}/.js/highlight.pack.js"></script>
+  <script type="text/javascript" src="${paths.resourcesPath}/js/highlight.pack.js"></script>
 </head>
 
 <body>

@@ -98,12 +98,12 @@ table.coverageStats th a:hover {
 }
 
 table.coverageStats th.sortedDesc a {
-  background: url(../.img/arrowDown.gif) no-repeat 100% 2px;
+  background: url(../img/arrowDown.gif) no-repeat 100% 2px;
   padding-right: 20px;
 }
 
 table.coverageStats th.sortedAsc a {
-  background: url(../.img/arrowUp.gif) no-repeat 100% 2px;
+  background: url(../img/arrowUp.gif) no-repeat 100% 2px;
   padding-right: 20px;
 }
 

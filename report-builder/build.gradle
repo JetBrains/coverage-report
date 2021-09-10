@@ -24,7 +24,7 @@ sourceSets {
 dependencies {
     implementation "org.freemarker:freemarker:2.3.30"
     implementation "org.jetbrains:annotations:16.0.2"
-    implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.575"
+    implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.593"
 }
 
 task reportBuilderJar(type: Jar) {

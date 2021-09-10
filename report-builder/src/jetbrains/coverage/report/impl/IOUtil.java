@@ -16,7 +16,6 @@
 
 package jetbrains.coverage.report.impl;
 
-import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,8 +25,6 @@ import java.io.*;
  * @author Pavel.Sher
  */
 public class IOUtil {
-  private static final Logger LOG = Logger.getInstance(IOUtil.class.getName());
-
   /**
    * Creates directory if it does not exist. Throws runtime exception if directory creation was not successful.
    *

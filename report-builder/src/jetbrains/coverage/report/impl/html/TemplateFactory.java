@@ -16,7 +16,6 @@
 
 package jetbrains.coverage.report.impl.html;
 
-import com.intellij.openapi.diagnostic.Logger;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -29,7 +28,6 @@ import java.io.IOException;
  * @author Pavel.Sher
  */
 public class TemplateFactory {
-  private static final Logger LOG = Logger.getInstance(TemplateFactory.class.getName());
 
   private Template myNamespacesTeamplate;
   private Template myModulesTemplate;
@@ -45,7 +43,8 @@ public class TemplateFactory {
       configuration.setSetting(Configuration.CACHE_STORAGE_KEY, "strong:420, soft:400");
       configuration.setSetting(Configuration.TEMPLATE_UPDATE_DELAY_KEY, "0");
     } catch (TemplateException e) {
-      LOG.warn("Failed to set configuration properties: " + e.getMessage(), e);
+      System.err.println("Failed to set configuration properties: " + e.getMessage());
+      e.printStackTrace();
     }
 
     myNamespacesTeamplate = configuration.getTemplate("namespaces.ftl");

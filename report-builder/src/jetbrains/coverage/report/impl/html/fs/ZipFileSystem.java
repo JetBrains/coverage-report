@@ -16,7 +16,6 @@
 
 package jetbrains.coverage.report.impl.html.fs;
 
-import com.intellij.openapi.diagnostic.Logger;
 import jetbrains.coverage.report.impl.IOUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +31,6 @@ import java.util.zip.ZipOutputStream;
  *         Date: 27.02.11 19:54
  */
 public class ZipFileSystem implements FileSystem, Closeable {
-  private static final Logger LOG = Logger.getInstance(ZipFileSystem.class.getName());
 
   private final File myBase;
   private final ZipOutputStream myZos;
@@ -49,7 +47,7 @@ public class ZipFileSystem implements FileSystem, Closeable {
   public OutputStream openFile(@NotNull File path) throws IOException {
     String rel = IOUtil.makeRelative(myBase, path);
     if (!myFiles.add(rel)) {
-      LOG.warn("Attepting to write to " + rel + " second time. Fake output stream will be returned to avoid error");
+      System.err.println(getClass().getCanonicalName() + ": Attepting to write to " + rel + " second time. Fake output stream will be returned to avoid error");
       return new OutputStream() {
         @Override
         public void write(int b) throws IOException {

@@ -16,7 +16,6 @@
 
 package jetbrains.coverage.report.idea;
 
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.rt.coverage.data.ClassData;
 import com.intellij.rt.coverage.data.LineCoverage;
 import com.intellij.rt.coverage.data.LineData;
@@ -56,7 +55,7 @@ public class IDEACoverageData implements CoverageData, CoverageSourceData {
 
     for (Map.Entry<String, Collection<String>> classEntry: classAndRelatedClassesMap.entrySet()) {
       String className = classEntry.getKey();
-      if (StringUtil.isEmpty(className)) continue;
+      if (className == null || className.length() == 0) continue;
       if (className.startsWith("com.intellij.rt.coverage")) continue; // ignore coverage implementation classes
       if (isInnerClass(className)) continue;
 

@@ -21,10 +21,18 @@ sourceSets {
     test.resources.srcDirs = []
 }
 
+configurations {
+    implementation.extendsFrom(externalDependancies)
+}
+
 dependencies {
-    implementation "org.freemarker:freemarker:2.3.30"
-    implementation "org.jetbrains:annotations:16.0.2"
+    externalDependancies "org.freemarker:freemarker:2.3.30"
+    externalDependancies "org.jetbrains:annotations:16.0.2"
     implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.593"
+}
+
+public getPublishDependencies() {
+    configurations.getByName("externalDependancies").getResolvedConfiguration().getFirstLevelModuleDependencies()
 }
 
 task reportBuilderJar(type: Jar) {

@@ -17,10 +17,10 @@
 
 apply plugin: 'maven-publish'
 
-private addDependencies(publication, project) {
+private addDependencies(publication, dependencyList) {
     publication.pom.withXml {
         def dependencies = asNode().appendNode('dependencies')
-        project.configurations.getByName("compileClasspath").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
+        dependencyList.each {
             def dependency = dependencies.appendNode('dependency')
             dependency.appendNode('groupId', it.moduleGroup)
             dependency.appendNode('artifactId', it.moduleName)
@@ -38,7 +38,7 @@ project(":report-builder").afterEvaluate { builder ->
                 artifactId report_builder_jar_name
                 version version
                 artifact builder.tasks.getByName("reportBuilderJar")
-                addDependencies(it, builder)
+                addDependencies(it, builder.getPublishDependencies())
             }
             ReportBuilderJavadocPublication(MavenPublication) {
                 groupId coverageGroupId

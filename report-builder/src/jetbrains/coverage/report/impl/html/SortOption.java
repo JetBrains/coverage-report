@@ -79,61 +79,67 @@ public enum SortOption {
 
   public Comparator<ClassInfo> createClassComparator(final StatisticsCalculator covStatsCalculator) {
     final boolean desc = isDescendingOrder();
+    final Comparator<ClassInfo> nameComparator = new Comparator<ClassInfo>() {
+      public int compare(final ClassInfo o1, final ClassInfo o2) {
+        int result = o1.getName().compareTo(o2.getName());
+        return desc ? -result : result;
+      }
+    };
     if (orderByName()) {
-        return new Comparator<ClassInfo>() {
-          public int compare(final ClassInfo o1, final ClassInfo o2) {
-            int result = o1.getName().compareTo(o2.getName());
-            return desc ? -result : result;
-          }
-        };
+      return nameComparator;
     }
 
-    return comparator(new Func<ClassInfo>() {
+    final Comparator<ClassInfo> valueComparator = comparator(new Func<ClassInfo>() {
       public CoverageStatistics compute(ClassInfo classInfo) {
         return covStatsCalculator.getForClassWithInnerClasses(classInfo);
       }
     });
+    return addSecondaryComparator(valueComparator, nameComparator);
   }
 
   public Comparator<String> createNamespaceComparator(final ModuleInfo module, final StatisticsCalculator covStatsCalculator) {
     final boolean desc = isDescendingOrder();
     final String moduleName = module.getName();
 
+    final Comparator<String> nameComparator = new Comparator<String>() {
+      public int compare(final String o1, final String o2) {
+        int result = o1.compareTo(o2);
+        return desc ? -result : result;
+      }
+    };
     if (orderByName()) {
-        return new Comparator<String>() {
-          public int compare(final String o1, final String o2) {
-            int result = o1.compareTo(o2);
-            return desc ? -result : result;
-          }
-        };
+      return nameComparator;
     }
-    return comparator(new Func<String>() {
+    final Comparator<String> valueComparator = comparator(new Func<String>() {
       public CoverageStatistics compute(String s) {
         return covStatsCalculator.getForNamespace(moduleName, s);
       }
     });
+    return addSecondaryComparator(valueComparator, nameComparator);
   }
 
   public Comparator<ModuleInfo> createModulesComparator(final StatisticsCalculator covStatsCalculator) {
-    if (orderByName()) {
-      return new Comparator<ModuleInfo>() {
-          public int compare(final ModuleInfo o1, final ModuleInfo o2) {
-            final String n1 = o1.getName();
-            final String n2 = o2.getName();
-            if (n1 == null && n2 == null) return 0;
-            if (n1 != null && n2 == null) return 1;
-            if (n1 == null && n2 != null) return -1;
+    final Comparator<ModuleInfo> nameComparator = new Comparator<ModuleInfo>() {
+      public int compare(final ModuleInfo o1, final ModuleInfo o2) {
+        final String n1 = o1.getName();
+        final String n2 = o2.getName();
+        if (n1 == null && n2 == null) return 0;
+        if (n1 != null && n2 == null) return 1;
+        if (n1 == null && n2 != null) return -1;
 
-            int result = n1.compareTo(n2);
-            return isDescendingOrder() ? -result : result;
-          }
-        };
+        int result = n1.compareTo(n2);
+        return isDescendingOrder() ? -result : result;
+      }
+    };
+    if (orderByName()) {
+      return nameComparator;
     }
-    return comparator(new Func<ModuleInfo>() {
+    final Comparator<ModuleInfo> valueComparator = comparator(new Func<ModuleInfo>() {
       public CoverageStatistics compute(ModuleInfo moduleInfo) {
         return covStatsCalculator.getForModule(moduleInfo.getName());
       }
     });
+    return addSecondaryComparator(valueComparator, nameComparator);
   }
 
   private static interface Func<T> {
@@ -187,6 +193,17 @@ public enum SortOption {
     }
 
     throw new IllegalArgumentException("Failed to get statistics selector for: " + this);
+  }
+
+  private <T> Comparator<T> addSecondaryComparator(@NotNull final Comparator<T> mainComparator, @NotNull final Comparator<T> secondaryComparator)  {
+    return new Comparator<T>() {
+      @Override
+      public int compare(T o1, T o2) {
+        final int mainResult = mainComparator.compare(o1, o2);
+        if (mainResult != 0) return mainResult;
+        return secondaryComparator.compare(o1, o2);
+      }
+    };
   }
 
   private <T> Comparator<T> comparator(@NotNull final Func<T> fun) {

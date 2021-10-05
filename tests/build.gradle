@@ -26,4 +26,5 @@ dependencies {
     testImplementation "org.jetbrains:annotations:16.0.2"
     testImplementation library_utils
     testImplementation project(":report-builder")
+    testImplementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.610"
 }

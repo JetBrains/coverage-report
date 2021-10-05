@@ -28,7 +28,7 @@ configurations {
 dependencies {
     externalDependancies "org.freemarker:freemarker:2.3.30"
     externalDependancies "org.jetbrains:annotations:16.0.2"
-    implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.593"
+    implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.610"
 }
 
 public getPublishDependencies() {

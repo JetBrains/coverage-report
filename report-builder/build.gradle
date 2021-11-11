@@ -28,7 +28,7 @@ configurations {
 dependencies {
     externalDependancies "org.freemarker:freemarker:2.3.30"
     externalDependancies "org.jetbrains:annotations:16.0.2"
-    implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.610"
+    implementation "org.jetbrains.intellij.deps:intellij-coverage-agent:1.0.634"
 }
 
 public getPublishDependencies() {
@@ -42,9 +42,16 @@ task reportBuilderJar(type: Jar) {
 }
 
 task reportBuilderJavadocJar(type: Jar) {
-    archiveBaseName.set(report_builder_javadoc_jar_name)
+    archiveBaseName.set(report_builder_jar_name)
     destinationDirectory = dist
+    archiveClassifier = 'javadoc'
     from javadoc
+}
+
+task reportBuilderSoursesJar(type: Jar, dependsOn: classes) {
+    archiveBaseName.set(report_builder_jar_name)
+    archiveClassifier = 'sources'
+    from(sourceSets.main.allSource)
 }
 
 javadoc {
@@ -53,5 +60,5 @@ javadoc {
 }
 
 task allJars {
-    dependsOn(reportBuilderJar, reportBuilderJavadocJar)
+    dependsOn(reportBuilderJar, reportBuilderJavadocJar, reportBuilderSoursesJar)
 }

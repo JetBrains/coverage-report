@@ -20,6 +20,9 @@ import com.intellij.rt.coverage.data.BranchData;
 import com.intellij.rt.coverage.data.ClassData;
 import com.intellij.rt.coverage.data.LineCoverage;
 import com.intellij.rt.coverage.data.LineData;
+import com.intellij.rt.coverage.data.ProjectData;
+import com.intellij.rt.coverage.data.instructions.ClassInstructions;
+import com.intellij.rt.coverage.data.instructions.LineInstructions;
 import jetbrains.coverage.report.ClassInfo;
 import jetbrains.coverage.report.Entry;
 import jetbrains.coverage.report.JavaClassInfo;
@@ -35,13 +38,16 @@ import java.util.List;
  * @author Pavel.Sher
  */
 public class IDEACoverageClassInfo extends JavaClassInfo {
-  private ClassData myClassData;
-  private Collection<ClassData> myInnerClasses;
+  private final ProjectData myProjectData;
+  private final ClassData myClassData;
+  private final Collection<ClassData> myInnerClasses;
 
-  public IDEACoverageClassInfo(@NotNull final String className,
+  public IDEACoverageClassInfo(@NotNull ProjectData projectData,
+                               @NotNull final String className,
                                @Nullable final ClassData classData,
                                @NotNull final Collection<ClassData> innerClasses) {
     super(className);
+    myProjectData = projectData;
     myClassData = classData;
     myInnerClasses = innerClasses;
   }
@@ -109,13 +115,30 @@ public class IDEACoverageClassInfo extends JavaClassInfo {
   }
 
   public Entry getStatementStats() {
-    return null;
+    if (!myProjectData.isInstructionsCoverageEnabled()) return null;
+    final ClassInstructions classInstructions = myProjectData.getInstructions().get(getFQName());
+    if (classInstructions == null) return null;
+    if (myClassData == null) return null;
+    final LineData[] lines = (LineData[])myClassData.getLines();
+    if (lines == null) return null;
+    int total = 0;
+    int covered = 0;
+    final LineInstructions[] instructions = classInstructions.getlines();
+    for (LineData lineData : lines) {
+      if (lineData == null) continue;
+      final LineInstructions lineInstructions = instructions[lineData.getLineNumber()];
+      if (lineInstructions == null) continue;
+      final BranchData summary = lineInstructions.getInstructionsData(lineData);
+      total += summary.getTotalBranches();
+      covered += summary.getCoveredBranches();
+    }
+    return new Entry(total, covered);
   }
 
   public List<ClassInfo> getInnerClasses() {
     List<ClassInfo> result = new ArrayList<ClassInfo>();
     for (ClassData inner: myInnerClasses) {
-      result.add(new IDEACoverageClassInfo(inner.getName(), inner, Collections.<ClassData>emptyList()));
+      result.add(new IDEACoverageClassInfo(myProjectData, inner.getName(), inner, Collections.<ClassData>emptyList()));
     }
     return result;
   }

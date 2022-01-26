@@ -60,7 +60,7 @@ public class IDEACoverageData implements CoverageData, CoverageSourceData {
       if (isInnerClass(className)) continue;
 
       ClassData classData = projectData.getClassData(className);
-      myClasses.add(new IDEACoverageClassInfo(className, classData, findRelatedClassData(projectData, classEntry.getValue())));
+      myClasses.add(new IDEACoverageClassInfo(projectData, className, classData, findRelatedClassData(projectData, classEntry.getValue())));
     }
   }
 

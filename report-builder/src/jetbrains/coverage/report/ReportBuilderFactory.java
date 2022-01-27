@@ -36,6 +36,14 @@ public class ReportBuilderFactory {
    * Creates new HTML report builder
    * @return new HTML report builder
    */
+  public static HTMLReportBuilder createHTMLReportBuilderForKover() {
+    return new HTMLReportBuilderImpl() {{setResourceBundleName("koverCoverage");}};
+  }
+
+  /**
+   * Creates new HTML report builder
+   * @return new HTML report builder
+   */
   public static HTMLReportBuilder createHTMLReportBuilderForDotNet() {
     return new HTMLReportBuilderImpl() {{setResourceBundleName("dotNetCoverage");}};
   }

@@ -33,6 +33,7 @@ public class MockClassInfo extends JavaClassInfo {
   private Entry myLines;
   private Entry myMethods;
   private Entry myBlocks;
+  private Entry myStatements;
 
   public MockClassInfo(final String fqname) {
     this(fqname, null);
@@ -72,6 +73,10 @@ public class MockClassInfo extends JavaClassInfo {
     return myLines;
   }
 
+  public Entry getStatementStats() {
+    return myStatements;
+  }
+
   public void setLines(Entry lines) {
     myLines = lines;
   }
@@ -84,7 +89,7 @@ public class MockClassInfo extends JavaClassInfo {
     myBlocks = blocks;
   }
 
-  public Entry getStatementStats() {
-    return null;
+  public void setStatements(Entry statements) {
+    myStatements = statements;
   }
 }

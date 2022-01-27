@@ -291,6 +291,8 @@ public class HTMLReportBuilderTest extends BaseTestCase {
       cd1.setLines(new Entry(10 + 5*j, 4 + (int)(3.1415*j)));
       cd2.setLines(new Entry(50  + 2*j, 37 + (int)(1.45*j)));
       cd3.setLines(new Entry(230 + 3*j, 137 + (int)(2.39*j)));
+      cd1.setBlocks(new Entry(10 + 5*j, 4 + (int)(3.1415*j)));
+      cd1.setStatements(new Entry(10 + 5*j, 4 + (int)(3.1415*j)));
 
       covData.setSource(cd1, "class BaseTestCase" + j + " {}");
       covData.setSource(cd2, "class FileUtil" + j + " {}");

@@ -61,9 +61,9 @@
 <@coverageStatHeaderCell statEntry=coverageStatistics.classStats label="Class, %" sorted=sortOption.orderByClass() sortOption=sortOption.nextOrderByClass()/>
 </#if>
 <@coverageStatHeaderCell statEntry=coverageStatistics.methodStats label="Method, %" sorted=sortOption.orderByMethod()  sortOption=sortOption.nextOrderByMethod()/>
-<@coverageStatHeaderCell statEntry=coverageStatistics.blockStats label="Block, %" sorted=sortOption.orderByBlock()  sortOption=sortOption.nextOrderByBlock()/>
+<@coverageStatHeaderCell statEntry=coverageStatistics.blockStats label="${resources['coverage.block']?cap_first}, %" sorted=sortOption.orderByBlock()  sortOption=sortOption.nextOrderByBlock()/>
 <@coverageStatHeaderCell statEntry=coverageStatistics.lineStats label="Line, %" sorted=sortOption.orderByLine()  sortOption=sortOption.nextOrderByLine()/>
-<@coverageStatHeaderCell statEntry=coverageStatistics.statementStats label="Statements, %" sorted=sortOption.orderByStatement()  sortOption=sortOption.nextOrderByStatement()/>
+<@coverageStatHeaderCell statEntry=coverageStatistics.statementStats label="${resources['coverage.statement']?cap_first}, %" sorted=sortOption.orderByStatement()  sortOption=sortOption.nextOrderByStatement()/>
 </#macro>
 
 <#function ternaryOp condition positiveExpr negativeExpr>

@@ -126,6 +126,7 @@ public class IDEACoverageClassInfo extends JavaClassInfo {
     final LineInstructions[] instructions = classInstructions.getlines();
     for (LineData lineData : lines) {
       if (lineData == null) continue;
+      if (lineData.getLineNumber() >= instructions.length) break;
       final LineInstructions lineInstructions = instructions[lineData.getLineNumber()];
       if (lineInstructions == null) continue;
       final BranchData summary = lineInstructions.getInstructionsData(lineData);

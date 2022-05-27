@@ -72,13 +72,13 @@
 
 <#assign files = classDataBean.files/>
 <#if files?size == 0>
-  <div class="sourceCode">Source code is not available<br /></div>
+  <code class="sourceCode">Source code is not available<br /></code>
 <#else>
 <#list files as file>
 <#assign lines = file.lines/>
 <#if file.caption?has_content><h2>${file.caption}</h2></#if>
 <pre>
-<div class="sourceCode" id="sourceCode"><#list lines as lineBean
+<code class="sourceCode" id="sourceCode"><#list lines as lineBean
 ><#assign class=""
 ><#if lineBean.executable
 ><#switch lineBean.coverage
@@ -87,9 +87,9 @@
 ><#case "PARTIAL"><#assign class="pc"><#break
 ></#switch
 ></#if
-><#if class?length &gt; 0><b class="${class}"></#if><i class="no-highlight">${lineBean.lineNum}</i>&nbsp;${lineBean.sourceCode?xhtml}<#if class?length &gt; 0></b></#if>
+><#if class?length &gt; 0><b class="${class}"></#if>&nbsp;${lineBean.sourceCode?xhtml}<#if class?length &gt; 0></b></#if>
 </#list>
-</div>
+</code>
 </pre>
 </#list>
 </#if>

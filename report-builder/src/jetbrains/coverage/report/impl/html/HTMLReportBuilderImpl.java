@@ -188,14 +188,15 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
   private void prepareReportDir(@NotNull final FileSystem fs) throws IOException {
     File cssDir = new File(myReportDir, CSS_DIR);
     IOUtil.copyResource(getClass(), "/htmlTemplates/css/coverage.css", fs.openFile(new File(cssDir, "coverage.css")));
-    IOUtil.copyResource(getClass(), "/htmlTemplates/css/highlight-idea.css", fs.openFile(new File(cssDir, "highlight-idea.css")));
+    IOUtil.copyResource(getClass(), "/htmlTemplates/css/idea.min.css", fs.openFile(new File(cssDir, "idea.min.css")));
 
     File imgDir = new File(myReportDir, IMG_DIR);
     IOUtil.copyResource(getClass(), "/htmlTemplates/img/arrowUp.gif", fs.openFile(new File(imgDir, "arrowUp.gif")));
     IOUtil.copyResource(getClass(), "/htmlTemplates/img/arrowDown.gif", fs.openFile(new File(imgDir, "arrowDown.gif")));
 
     File jsDir = new File(myReportDir, JS_DIR);
-    IOUtil.copyResource(getClass(), "/htmlTemplates/js/highlight.pack.js", fs.openFile(new File(jsDir, "highlight.pack.js")));
+    IOUtil.copyResource(getClass(), "/htmlTemplates/js/highlight.min.js", fs.openFile(new File(jsDir, "highlight.min.js")));
+    IOUtil.copyResource(getClass(), "/htmlTemplates/js/highlightjs-line-numbers.min.js", fs.openFile(new File(jsDir, "highlightjs-line-numbers.min.js")));
   }
 
   private MapToSet<ModuleInfo, ClassInfo> groupByModules(final Collection<ClassInfo> coverageData) {

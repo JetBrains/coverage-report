@@ -8,3 +8,4 @@
 [#-- @ftlvariable name="sort_option_sort_by_name" type="jetbrains.coverage.report.impl.html.SortOption" --]
 [#-- @ftlvariable name="sort_option_none" type="jetbrains.coverage.report.impl.html.SortOption" --]
 [#-- @ftlvariable name="include_modules" type="java.lang.Boolean" --]
+[#-- @ftlvariable name="reportTitle" type="java.lang.String" --]

@@ -1,6 +1,6 @@
 <#setting number_format="#">
 
-<#macro currentScope>Current scope: </#macro>
+<#macro currentScope>Current scope: <#if reportTitle?has_content>${reportTitle}<span class="separator">|</span></#if></#macro>
 
 <#macro coverageStatCell statEntry showEmpty=false>
 <#if statEntry.percent &gt;= 0>
@@ -93,7 +93,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > ${title}</title>
+  <title><#if reportTitle?has_content>${reportTitle} </#if>Coverage Report > ${title}</title>
   <style type="text/css">
     @import "${paths.resourcesPath}/css/coverage.css";
     @import "${paths.resourcesPath}/css/idea.min.css";

@@ -23,6 +23,7 @@ import jetbrains.coverage.report.CoverageData;
 import jetbrains.coverage.report.Entry;
 import jetbrains.coverage.report.ReportBuilderFactory;
 import jetbrains.coverage.report.html.HTMLReportBuilder;
+import jetbrains.coverage.report.impl.html.HTMLReportBuilderImpl;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
@@ -96,6 +97,18 @@ public class HTMLReportBuilderTest extends BaseTestCase {
     MockCoverageData covData = createMockCoverage("");
 
     HTMLReportBuilder builder = ReportBuilderFactory.createHTMLReportBuilder();
+    builder.setReportDir(myReportDir);
+    builder.generateReport(covData);
+
+    checkReport(covData);
+  }
+
+  @Test
+  public void test_generate_repor_with_title() throws IOException {
+    MockCoverageData covData = createMockCoverage("");
+
+    HTMLReportBuilder builder = ReportBuilderFactory.createHTMLReportBuilder();
+    ((HTMLReportBuilderImpl)builder).setReportTitle("Title");
     builder.setReportDir(myReportDir);
     builder.generateReport(covData);
 

@@ -33,23 +33,26 @@ public class TemplateProcessorFactory {
   private final boolean myIncludeModule;
   private final FooterInfos myFooterInfos;
   private final FileSystem myFS;
+  private final String myReportTitle;
 
 
   public TemplateProcessorFactory(@NotNull final TemplateFactory factory,
                                   @NotNull final String resourceBundleName,
                                   boolean includeModule,
                                   @NotNull FooterInfos footerText,
-                                  @NotNull FileSystem fs) {
+                                  @NotNull FileSystem fs,
+                                  @NotNull String reportTitle) {
     myFactory = factory;
     myResourceBundleName = resourceBundleName;
     myIncludeModule = includeModule;
     myFooterInfos = footerText;
     myFS = fs;
+    myReportTitle = reportTitle;
   }
 
   @NotNull
   public TemplateProcessor createEmptyTemplate() {
-    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS) {
+    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS, myReportTitle) {
       @Override
       protected String getFooterText() {
         return myFooterInfos.getModulesIndexFooterHTML();
@@ -65,7 +68,7 @@ public class TemplateProcessorFactory {
 
   @NotNull
   public TemplateProcessor createModulesIndexProcessor() {
-    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS) {
+    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS, myReportTitle) {
       @NotNull
       @Override
       protected Template createTemplate() throws IOException {
@@ -81,7 +84,7 @@ public class TemplateProcessorFactory {
 
   @NotNull
   public TemplateProcessor createNamespacesIndexProcessor() {
-    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS) {
+    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS, myReportTitle) {
       @NotNull
       @Override
       protected Template createTemplate() throws IOException {
@@ -97,7 +100,7 @@ public class TemplateProcessorFactory {
 
   @NotNull
   public TemplateProcessor createClassesIndexProcessor() {
-    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS) {
+    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS, myReportTitle) {
       @NotNull
       @Override
       protected Template createTemplate() throws IOException {
@@ -113,7 +116,7 @@ public class TemplateProcessorFactory {
 
   @NotNull
   public TemplateProcessor createClassSourceProcessor() {
-    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS) {
+    return new TemplateProcessorBase(myResourceBundleName, myIncludeModule, myFS, myReportTitle) {
       @NotNull
       @Override
       protected Template createTemplate() throws IOException {

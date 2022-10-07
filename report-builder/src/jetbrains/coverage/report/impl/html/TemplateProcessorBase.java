@@ -38,11 +38,13 @@ public abstract class TemplateProcessorBase implements TemplateProcessor {
   private final String myResourceBundleName;
   private final boolean myIncludeModule;
   private final FileSystem myFS;
+  private final String myReportTitle;
 
-  protected TemplateProcessorBase(String resourceBundleName, boolean includeModule, @NotNull FileSystem fs) {
+  protected TemplateProcessorBase(String resourceBundleName, boolean includeModule, @NotNull FileSystem fs, String reportTitle) {
     myResourceBundleName = resourceBundleName;
     myIncludeModule = includeModule;
     myFS = fs;
+    myReportTitle = reportTitle;
   }
 
   protected abstract String getFooterText();
@@ -58,6 +60,7 @@ public abstract class TemplateProcessorBase implements TemplateProcessor {
     map.put("sort_option_none", SortOption.NONE);
     map.put("include_modules", myIncludeModule);
     map.put("footerTextHTML", getFooterText());
+    map.put("reportTitle", myReportTitle);
     createFileFromTemplate(createTemplate(), map, paths.getReportFileName());
   }
 

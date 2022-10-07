@@ -8,7 +8,7 @@
     all ${resources['coverage.module_plural']}
 </div>
 
-<h1>Overall Coverage Summary</h1>
+<h1><#if reportTitle?has_content>${reportTitle}: </#if>Overall Coverage Summary</h1>
 <@overallStatTable labelName="${resources['coverage.module']?cap_first}" labelValue="all classes" coverageStatistics=statsCalculator.overallStats/>
 
 <br/>

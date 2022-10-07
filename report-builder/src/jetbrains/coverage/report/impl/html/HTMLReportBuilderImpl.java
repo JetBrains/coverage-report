@@ -39,6 +39,7 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
   private File myReportDir;
   private File myReportZip;
   private String myResourceBundleName = "javaCoverage";
+  private String myReportTitle = "";
 
   private static final String CSS_DIR = "css";
   private static final String IMG_DIR = "img";
@@ -71,6 +72,10 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
     myFooterSourceText = html;
   }
 
+  public void setReportTitle(@NotNull String reportTitle) {
+    myReportTitle = reportTitle;
+  }
+
   public void generateReport(@NotNull CoverageData coverageData) throws ReportGenerationFailedException {
     StatisticsCalculator covStatsCalculator = ReportBuilderFactory.createStatisticsCalculator();
     generateReport(coverageData, covStatsCalculator);
@@ -93,10 +98,10 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
       final TemplateFactory templateFactory = new TemplateFactory();
       if (moduleToClassesMap.keySet().size() > 1) {
         paths = new ModulesLocalPaths(myReportDir);
-        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, true, getFooterInfos(), fs);
+        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, true, getFooterInfos(), fs, myReportTitle);
         new ModulesIndexGenerator(fac.createModulesIndexProcessor(), paths).generateModulesIndex(moduleToClassesMap.keySet(), covStatsCalculator);
       } else {
-        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, false, getFooterInfos(), fs);
+        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, false, getFooterInfos(), fs, myReportTitle);
         paths = new NamespacesLocalPaths(myReportDir);
       }
 

@@ -18,7 +18,7 @@
     </#if>
 </div>
 
-<h1>Overall Coverage Summary ${moduleCaption}</h1>
+<h1><#if reportTitle?has_content>${reportTitle}: </#if>Overall Coverage Summary ${moduleCaption}</h1>
 <#assign overallStats=statsCalculator.getForModule(module.name)>
 <@overallStatTable labelName="${resources['coverage.namespace']?cap_first}" labelValue="all ${resources['coverage.class_plural']}" coverageStatistics=overallStats/>
 

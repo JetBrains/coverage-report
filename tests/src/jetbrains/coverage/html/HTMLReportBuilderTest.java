@@ -104,11 +104,23 @@ public class HTMLReportBuilderTest extends BaseTestCase {
   }
 
   @Test
-  public void test_generate_repor_with_title() throws IOException {
+  public void test_generate_report_with_title() throws IOException {
     MockCoverageData covData = createMockCoverage("");
 
     HTMLReportBuilder builder = ReportBuilderFactory.createHTMLReportBuilder();
     ((HTMLReportBuilderImpl)builder).setReportTitle("Title");
+    builder.setReportDir(myReportDir);
+    builder.generateReport(covData);
+
+    checkReport(covData);
+  }
+
+  @Test
+  public void test_generate_report_with_charset() throws IOException {
+    MockCoverageData covData = createMockCoverage("");
+
+    HTMLReportBuilder builder = ReportBuilderFactory.createHTMLReportBuilder();
+    ((HTMLReportBuilderImpl)builder).setCharset("UTF-8");
     builder.setReportDir(myReportDir);
     builder.generateReport(covData);
 

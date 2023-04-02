@@ -93,6 +93,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
+  <#if charset?has_content><meta http-equiv="Content-Type" content="text/html;charset=${charset}"> </#if>
   <title><#if reportTitle?has_content>${reportTitle} </#if>Coverage Report > ${title}</title>
   <style type="text/css">
     @import "${paths.resourcesPath}/css/coverage.css";

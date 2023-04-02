@@ -40,12 +40,14 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
   private File myReportZip;
   private String myResourceBundleName = "javaCoverage";
   private String myReportTitle = "";
+  private String myCharset = "";
 
   private static final String CSS_DIR = "css";
   private static final String IMG_DIR = "img";
   private static final String JS_DIR = "js";
   private String myFooterText;
   private String myFooterSourceText;
+
 
   public File getReportZip() {
     return myReportZip;
@@ -76,6 +78,10 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
     myReportTitle = reportTitle;
   }
 
+  public void setCharset(@NotNull String charset) {
+    myCharset = charset;
+  }
+
   public void generateReport(@NotNull CoverageData coverageData) throws ReportGenerationFailedException {
     StatisticsCalculator covStatsCalculator = ReportBuilderFactory.createStatisticsCalculator();
     generateReport(coverageData, covStatsCalculator);
@@ -98,10 +104,10 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
       final TemplateFactory templateFactory = new TemplateFactory();
       if (moduleToClassesMap.keySet().size() > 1) {
         paths = new ModulesLocalPaths(myReportDir);
-        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, true, getFooterInfos(), fs, myReportTitle);
+        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, true, getFooterInfos(), fs, myReportTitle, myCharset);
         new ModulesIndexGenerator(fac.createModulesIndexProcessor(), paths).generateModulesIndex(moduleToClassesMap.keySet(), covStatsCalculator);
       } else {
-        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, false, getFooterInfos(), fs, myReportTitle);
+        fac = new TemplateProcessorFactory(templateFactory, myResourceBundleName, false, getFooterInfos(), fs, myReportTitle, myCharset);
         paths = new NamespacesLocalPaths(myReportDir);
       }
 

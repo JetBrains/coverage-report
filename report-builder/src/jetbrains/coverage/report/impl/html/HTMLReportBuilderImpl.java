@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -40,7 +41,7 @@ public class HTMLReportBuilderImpl implements HTMLReportBuilder {
   private File myReportZip;
   private String myResourceBundleName = "javaCoverage";
   private String myReportTitle = "";
-  private String myCharset = "";
+  private String myCharset = Charset.defaultCharset().displayName();
 
   private static final String CSS_DIR = "css";
   private static final String IMG_DIR = "img";

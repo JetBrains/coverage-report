@@ -67,13 +67,12 @@ public class IDEACoverageClassInfo extends JavaClassInfo {
     int covered = 0;
     if (myClassData == null) return null;
 
-    Object[] lines = myClassData.getLines();
+    LineData[] lines = (LineData[]) myClassData.getLines();
     if (lines == null) return null;
 
-    for (Object obj: lines) {
-      if (obj == null) continue; // if obj is null the line is not executable
+    for (LineData ld: lines) {
+      if (ld == null) continue; // if ld is null the line is not executable
       total++;
-      LineData ld = (LineData) obj;
       if (isCovered(ld.getStatus())) {
         covered++;
       }
@@ -87,9 +86,9 @@ public class IDEACoverageClassInfo extends JavaClassInfo {
     int covered = 0;
 
     if (myClassData == null) return null;
-    for (Object m: myClassData.getMethodSigs()) {
+    for (String m: myClassData.getMethodSigs()) {
       total++;
-      Integer status = myClassData.getStatus((String) m);
+      Integer status = myClassData.getStatus(m);
       if (isCovered(status)) {
         covered++;
       }
@@ -101,11 +100,10 @@ public class IDEACoverageClassInfo extends JavaClassInfo {
     int total = 0;
     int covered = 0;
     if (myClassData == null) return null;
-    Object[] lines = myClassData.getLines();
+    LineData[] lines = (LineData[]) myClassData.getLines();
     if (lines == null) return null;
-    for (Object l: lines) {
-      if (l == null) continue;
-      LineData line = (LineData) l;
+    for (LineData line: lines) {
+      if (line == null) continue;
       BranchData branches = line.getBranchData();
       if (branches == null) continue;
       total += branches.getTotalBranches();

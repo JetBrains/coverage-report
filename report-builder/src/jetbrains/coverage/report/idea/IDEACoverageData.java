@@ -84,10 +84,9 @@ public class IDEACoverageData implements CoverageData, CoverageSourceData {
     Map<Integer, CoverageStatus> lines = new TreeMap<Integer, CoverageStatus>();
 
     for (ClassData clazz : data) {
-      final Object[] linez = clazz.getLines();
-      if (linez == null) continue;
-      for (int i = 0, linezLength = linez.length; i < linezLength; i++) {
-        LineData o = (LineData) linez[i];
+      final LineData[] linesArray = (LineData[]) clazz.getLines();
+      if (linesArray == null) continue;
+      for (LineData o : linesArray) {
         if (o != null) {
           lines.put(o.getLineNumber(), CoverageStatus.merge(lines.get(o.getLineNumber()), convertToLineCoverage(o)));
         }

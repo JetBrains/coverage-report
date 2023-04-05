@@ -9,3 +9,4 @@
 [#-- @ftlvariable name="sort_option_none" type="jetbrains.coverage.report.impl.html.SortOption" --]
 [#-- @ftlvariable name="include_modules" type="java.lang.Boolean" --]
 [#-- @ftlvariable name="reportTitle" type="java.lang.String" --]
+[#-- @ftlvariable name="charset" type="java.lang.String" --]

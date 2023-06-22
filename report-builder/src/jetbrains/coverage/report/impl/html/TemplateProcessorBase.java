@@ -16,9 +16,11 @@
 
 package jetbrains.coverage.report.impl.html;
 
+import freemarker.core._MiscTemplateException;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.ResourceBundleModel;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import jetbrains.coverage.report.ReportGenerationFailedException;
 import jetbrains.coverage.report.impl.IOUtil;
 import jetbrains.coverage.report.impl.html.fs.*;
@@ -76,11 +78,38 @@ public abstract class TemplateProcessorBase implements TemplateProcessor {
       fos = myFS.openFile(file);
 
       Writer writer = new OutputStreamWriter(fos);
-      tpl.process(model, writer);
+      processModelLoop(tpl, model, writer);
     } catch (Throwable e) {
       throw new ReportGenerationFailedException("Failed to generate file: " + file.getAbsolutePath() + ". " + e.getMessage(), e);
     } finally {
       IOUtil.close(fos);
+    }
+  }
+
+  // Freemarker can throw unexpected exceptions inside process call.
+  // The issue is nondeterministic, so we perform several retries here.
+  private void processModelLoop(@NotNull Template tpl, @NotNull Map model, Writer writer) throws IOException, TemplateException {
+    int attempt = 0;
+    while (true) {
+      try {
+        attempt++;
+        tpl.process(model, writer);
+        return;
+      } catch (_MiscTemplateException e) {
+        if (!(e.getCause() instanceof IOException)) {
+          throw e;
+        }
+
+        if (attempt < 3) {
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException ex) {
+            // no-op
+          }
+        } else {
+          throw e;
+        }
+      }
     }
   }
 

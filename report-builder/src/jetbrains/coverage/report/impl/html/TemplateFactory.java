@@ -47,11 +47,33 @@ public class TemplateFactory {
       e.printStackTrace();
     }
 
-    myNamespacesTeamplate = configuration.getTemplate("namespaces.ftl");
-    myModulesTemplate = configuration.getTemplate("modules.ftl");
-    myNamespaceIndexTemplate = configuration.getTemplate("namespaceIndex.ftl");
-    myClassTemplate = configuration.getTemplate("classCoverage.ftl");
-    myEmpty = configuration.getTemplate("empty.ftl");
+    myNamespacesTeamplate = getTemplateLoop(configuration, "namespaces.ftl");
+    myModulesTemplate = getTemplateLoop(configuration, "modules.ftl");
+    myNamespaceIndexTemplate = getTemplateLoop(configuration, "namespaceIndex.ftl");
+    myClassTemplate = getTemplateLoop(configuration, "classCoverage.ftl");
+    myEmpty = getTemplateLoop(configuration, "empty.ftl");
+  }
+
+  // Freemarker can throw unexpected 'stream closed' exceptions inside getTemplate call.
+  // The issue is nondeterministic, so we perform several retries here.
+  private Template getTemplateLoop(Configuration configuration, String name) throws IOException {
+    int attempt = 0;
+    while (true) {
+      try {
+        attempt++;
+        return configuration.getTemplate(name);
+      } catch (IOException e) {
+        if (attempt < 3) {
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException ex) {
+            // no-op
+          }
+        } else {
+          throw e;
+        }
+      }
+    }
   }
 
   @NotNull

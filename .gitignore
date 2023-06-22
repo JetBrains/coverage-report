@@ -4,3 +4,4 @@ dist
 build
 .gradle/
 .idea
+/gradle.properties

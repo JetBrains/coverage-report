@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.util.concurrent.Callable;
 
 /**
  * @author Pavel.Sher
@@ -47,19 +48,46 @@ public class IOUtil {
    * @param clazz         class from the class loader that can access the resource
    * @param resourceName  Name of the classpath resource
    * @param outputStream  target stream for the resource data
-   * @throws IOException if I/O error occured
+   * @throws IOException if I/O error occurred
    */
-  public static void copyResource(@NotNull Class<?> clazz, @NotNull String resourceName, @NotNull OutputStream outputStream) throws IOException {
-    InputStream asStream = null;
-    try {
-      asStream = clazz.getResourceAsStream(resourceName);
-      if (asStream != null) {
-
-        copyStreamContent(asStream, outputStream);
+  public static void copyResource(final @NotNull Class<?> clazz, final @NotNull String resourceName, final @NotNull OutputStream outputStream) throws IOException {
+    Callable<Void> doCopy = new Callable<Void>() {
+      public Void call() throws Exception {
+        InputStream asStream = null;
+        try {
+          asStream = clazz.getResourceAsStream(resourceName);
+          if (asStream != null) {
+            copyStreamContent(asStream, outputStream);
+          }
+        } finally {
+          close(asStream);
+          close(outputStream);
+        }
+        return null;
       }
-    } finally {
-      close(asStream);
-      close(outputStream);
+    };
+
+    IOUtil.<Void, IOException>loop(doCopy);
+  }
+
+  @SuppressWarnings({"unchecked", "BusyWait"})
+  public static <T, E extends Exception> T loop(Callable<T> action) throws E {
+    int attempt = 0;
+    while (true) {
+      try {
+        attempt++;
+        return action.call();
+      } catch (Exception e) {
+        if (attempt < 3) {
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException ex) {
+            // no-op
+          }
+        } else {
+          throw (E) e;
+        }
+      }
     }
   }
 

@@ -20,9 +20,11 @@ import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import jetbrains.coverage.report.impl.IOUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
 
 /**
  * @author Pavel.Sher
@@ -56,24 +58,14 @@ public class TemplateFactory {
 
   // Freemarker can throw unexpected 'stream closed' exceptions inside getTemplate call.
   // The issue is nondeterministic, so we perform several retries here.
-  private Template getTemplateLoop(Configuration configuration, String name) throws IOException {
-    int attempt = 0;
-    while (true) {
-      try {
-        attempt++;
+  private Template getTemplateLoop(final Configuration configuration, final String name) throws IOException {
+    final Callable<Template> get = new Callable<Template>() {
+      public Template call() throws Exception {
         return configuration.getTemplate(name);
-      } catch (IOException e) {
-        if (attempt < 3) {
-          try {
-            Thread.sleep(50);
-          } catch (InterruptedException ex) {
-            // no-op
-          }
-        } else {
-          throw e;
-        }
       }
-    }
+    };
+
+    return IOUtil.<Template, IOException>loop(get);
   }
 
   @NotNull

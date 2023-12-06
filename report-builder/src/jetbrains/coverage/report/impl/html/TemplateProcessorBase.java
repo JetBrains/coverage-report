@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
 
 /**
 * @author Eugene Petrenko (eugene.petrenko@jetbrains.com)
@@ -88,29 +89,15 @@ public abstract class TemplateProcessorBase implements TemplateProcessor {
 
   // Freemarker can throw unexpected exceptions inside process call.
   // The issue is nondeterministic, so we perform several retries here.
-  private void processModelLoop(@NotNull Template tpl, @NotNull Map model, Writer writer) throws IOException, TemplateException {
-    int attempt = 0;
-    while (true) {
-      try {
-        attempt++;
+  private void processModelLoop(@NotNull final Template tpl, @NotNull final Map model, final Writer writer) throws IOException, TemplateException {
+    final Callable<Void> process = new Callable<Void>() {
+      public Void call() throws Exception {
         tpl.process(model, writer);
-        return;
-      } catch (_MiscTemplateException e) {
-        if (!(e.getCause() instanceof IOException)) {
-          throw e;
-        }
-
-        if (attempt < 3) {
-          try {
-            Thread.sleep(50);
-          } catch (InterruptedException ex) {
-            // no-op
-          }
-        } else {
-          throw e;
-        }
+        return null;
       }
-    }
+    };
+
+    IOUtil.<Void, IOException>loop(process, true);
   }
 
   private ResourceBundle getResourceBundle() {

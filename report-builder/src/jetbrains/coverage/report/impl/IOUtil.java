@@ -67,20 +67,27 @@ public class IOUtil {
       }
     };
 
-    IOUtil.<Void, IOException>loop(doCopy);
+    IOUtil.<Void, IOException>loop(doCopy, false);
   }
 
+  public static volatile int repeatMaxCount = 3;
+  public static volatile long repeatCooldownMs = 50;
+
   @SuppressWarnings({"unchecked", "BusyWait"})
-  public static <T, E extends Exception> T loop(Callable<T> action) throws E {
+  public static <T, E extends Exception> T loop(Callable<T> action, boolean onlyWithIoCause) throws E {
     int attempt = 0;
     while (true) {
       try {
         attempt++;
         return action.call();
       } catch (Exception e) {
-        if (attempt < 3) {
+        if (onlyWithIoCause && !(e.getCause() instanceof IOException)) {
+          throw (E) e;
+        }
+
+        if (attempt < repeatMaxCount) {
           try {
-            Thread.sleep(50);
+            Thread.sleep(repeatCooldownMs);
           } catch (InterruptedException ex) {
             // no-op
           }

@@ -65,7 +65,7 @@ public class TemplateFactory {
       }
     };
 
-    return IOUtil.<Template, IOException>loop(get);
+    return IOUtil.<Template, IOException>loop(get, false);
   }
 
   @NotNull

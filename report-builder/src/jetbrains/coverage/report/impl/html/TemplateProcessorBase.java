@@ -78,7 +78,7 @@ public abstract class TemplateProcessorBase implements TemplateProcessor {
     try {
       fos = myFS.openFile(file);
 
-      Writer writer = new OutputStreamWriter(fos);
+      Writer writer = new OutputStreamWriter(fos, myCharSet);
       processModelLoop(tpl, model, writer);
     } catch (Throwable e) {
       throw new ReportGenerationFailedException("Failed to generate file: " + file.getAbsolutePath() + ". " + e.getMessage(), e);

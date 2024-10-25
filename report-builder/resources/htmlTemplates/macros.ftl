@@ -6,7 +6,7 @@
 <#if statEntry.percent &gt;= 0>
 <td class="coverageStat">
   <span class="percent">
-    ${(statEntry.percent)?string("0.#")}%<#if statEntry.diff?has_content> <@showDiff diffValue=statEntry.diff.percentDiff>${statEntry.diff.percentDiff?string("0.##")}%</@showDiff></#if>
+    ${((statEntry.percent*10)?floor/10)?string("0.#")}%<#if statEntry.diff?has_content> <@showDiff diffValue=statEntry.diff.percentDiff>${statEntry.diff.percentDiff?string("0.##")}%</@showDiff></#if>
   </span>
   <span class="absValue">
     (${statEntry.covered}<#if statEntry.diff?has_content

@@ -32,7 +32,7 @@ public abstract class JavaClassInfo implements ClassInfo {
    * Accepts fully qualified class name as a parameter.
    * @param fqClassName FQ class name
    */
-  public JavaClassInfo(@NotNull String fqClassName) {
+  protected JavaClassInfo(@NotNull String fqClassName) {
     myFQClassName = fqClassName;
     int lastDot = fqClassName.lastIndexOf(".");
     if (lastDot == -1) {

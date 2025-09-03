@@ -15,7 +15,7 @@
  */
 
 private calcVersion() {
-    hasProperty("teamcity") ? "1.0.${teamcity["build.number"]}" : "1.0.0"
+    hasProperty("teamcity") ? "1.0.${teamcity["build.number"]}" : "1.0.SNAPSHOT"
 }
 
 // use this option to test with JDK11

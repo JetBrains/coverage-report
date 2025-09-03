@@ -59,6 +59,11 @@ private setMavenMetadata(publication, publicationName, publicationDescription) {
 def coverageGroupId = 'org.jetbrains.intellij.deps'
 project(":report-builder").afterEvaluate { builder ->
     publishing {
+        repositories {
+            maven {
+                url = layout.buildDirectory.dir('maven-central-artifacts')
+            }
+        }
         publications {
             ReportBuilderPublication(MavenPublication) {
                 group coverageGroupId

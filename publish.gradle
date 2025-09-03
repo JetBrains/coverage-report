@@ -73,15 +73,3 @@ project(":report-builder").afterEvaluate { builder ->
         }
     }
 }
-
-ext.publishingUser = System.getenv('PUBLISHING_USER')
-ext.publishingPassword = System.getenv('PUBLISHING_PASSWORD')
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            username = rootProject.ext.publishingUser
-            password = rootProject.ext.publishingPassword
-        }
-    }
-}

@@ -59,6 +59,11 @@ private setMavenMetadata(publication, publicationName, publicationDescription) {
 def coverageGroupId = 'org.jetbrains.intellij.deps'
 project(":report-builder").afterEvaluate { builder ->
     publishing {
+        repositories {
+            maven {
+                url = layout.buildDirectory.dir('maven-central-artifacts')
+            }
+        }
         publications {
             ReportBuilderPublication(MavenPublication) {
                 group coverageGroupId
@@ -70,18 +75,6 @@ project(":report-builder").afterEvaluate { builder ->
                 addDependencies(it, builder.getPublishDependencies())
                 setMavenMetadata(owner, "Report Builder", "HTML coverage report generator")
             }
-        }
-    }
-}
-
-ext.publishingUser = System.getenv('PUBLISHING_USER')
-ext.publishingPassword = System.getenv('PUBLISHING_PASSWORD')
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            username = rootProject.ext.publishingUser
-            password = rootProject.ext.publishingPassword
         }
     }
 }
